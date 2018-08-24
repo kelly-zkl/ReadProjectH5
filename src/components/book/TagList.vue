@@ -117,7 +117,19 @@
         this.getData();
       },
       getData() {
+        this.listLoading = true;
 
+        this.$post(2, "item/all", {}).then((data) => {
+          this.tagList = data.data.content;
+          this.count = data.data.count;
+          setTimeout(() => {
+            this.listLoading = false;
+          }, 500);
+        }).catch((err) => {
+          this.listLoading = false;
+          this.tagList = [];
+          this.$message.error(err);
+        });
       },
       formatValue(row, column) {
         if (column.property === 'groupId') {
@@ -128,6 +140,7 @@
       }
     },
     mounted() {
+      this.getData();
       this.tagList = [{}, {}]
     }
   }

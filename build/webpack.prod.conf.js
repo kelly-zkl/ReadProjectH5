@@ -16,9 +16,9 @@ const env = require('../config/prod.env')
 const GenerateAssetPlugin = require('generate-asset-webpack-plugin');
 const createServerConfig = function (compilation) {
   let cfgJson = {
-    ApiUrl: "http://119.23.232.135:19191/CriminalCode-admin-web",
-    UserUrl: "http://119.23.232.135:19191/manager-api",
-    faceUrl: "http://192.168.31.245/"
+    deviceUrl: "https://www.yaojia.com/educate-device-web/",
+    userUrl: "https://www.yaojia.com/educate-ucenter-web/",
+    bookUrl: "https://www.yaojia.com/educate-book-web/"
   };
   return JSON.stringify(cfgJson);
 };

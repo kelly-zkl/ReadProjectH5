@@ -14,7 +14,7 @@
       </el-row>
       <el-form :inline="true" :model="query" align="left">
         <el-form-item style="margin-bottom: 10px" label="搜索">
-          <el-input v-model="query.name" size="medium" :maxlength=30 placeholder="书名/系列名"></el-input>
+          <el-input v-model="query.bookName" size="medium" :maxlength=30 placeholder="书名/系列名"></el-input>
         </el-form-item>
         <el-form-item style="margin-bottom: 10px" label="所属运营商">
           <el-select v-model="query.operator" placeholder="所属运营商" size="medium">
@@ -169,7 +169,19 @@
         this.getData();
       },
       getData() {
+        this.listLoading = true;
 
+        this.$post(2, "book/query", {page: 1, size: 10}).then((data) => {
+          this.bookList = data.data.content;
+          this.count = data.data.count;
+          setTimeout(() => {
+            this.listLoading = false;
+          }, 500);
+        }).catch((err) => {
+          this.listLoading = false;
+          this.bookList = [];
+          this.$message.error(err);
+        });
       },
       formatValue(row, column) {
         if (column.property === 'groupId') {
@@ -180,7 +192,7 @@
       }
     },
     mounted() {
-      this.bookList = [{}, {}]
+      this.getData();
     }
   }
 </script>

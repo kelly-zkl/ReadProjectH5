@@ -27,43 +27,45 @@ axios.defaults.withCredentials = true;
 Vue.config.productionTip = true;
 
 axios.get("serverconfig.json").then((result) => {
-  localStorage.setItem("ApiUrl", result.data.ApiUrl);
-  localStorage.setItem("UserUrl", result.data.UserUrl);
-  localStorage.setItem("faceUrl", result.data.faceUrl);
+  localStorage.setItem("deviceUrl", result.data.deviceUrl);
+  localStorage.setItem("userUrl", result.data.userUrl);
+  localStorage.setItem("bookUrl", result.data.bookUrl);
   sessionStorage.setItem("user", JSON.stringify(result.data.user));
 
-  Vue.prototype.$User_Url = result.data.UserUrl;
-  axios.defaults.baseURL = result.data.ApiUrl;
-  Vue.prototype.faceUrl = result.data.faceUrl;
+  Vue.prototype.$userUrl = result.data.userUrl;
+  axios.defaults.baseURL = result.data.deviceUrl;
+  Vue.prototype.bookUrl = result.data.bookUrl;
 }).catch((error) => {
   window.console.log(error)
 });
-Vue.prototype.faceUrl = localStorage.getItem("faceUrl");
-axios.defaults.baseURL = localStorage.getItem("ApiUrl");
-Vue.prototype.$User_Url = localStorage.getItem("UserUrl");
+Vue.prototype.bookUrl = localStorage.getItem("bookUrl");
+axios.defaults.baseURL = localStorage.getItem("deviceUrl");
+Vue.prototype.$userUrl = localStorage.getItem("userUrl");
 
-Vue.prototype.faceUrl = "http://192.168.31.245/";
+Vue.prototype.bookUrl = "https://www.yaojia.com/educate-book-web/";
 
-axios.defaults.baseURL = "http://192.168.89.10:8088";
+axios.defaults.baseURL = "https://www.yaojia.com/educate-device-web/";
 
-Vue.prototype.$User_Url = "http://192.168.31.244:19191/manager-api";
+Vue.prototype.$userUrl = "https://www.yaojia.com/educate-ucenter-web/";
 
-Vue.prototype.$post = function (path, param, successMsg, failMsg, isLogin) {
+Vue.prototype.$post = function (baseType, path, param, successMsg, failMsg, isLogin) {
   let config;
-  if (sessionStorage.getItem("user")) {
-    let userId = JSON.parse(sessionStorage.getItem("user")).userId;
-    if (userId) {
-      if (!param) {
-        param = {}
-      }
-      let stringify = JSON.stringify(param);
-      let token = md5(stringify + userId + "key-hz-20180123").toString();
-      config = {headers: {token: token, tokenId: userId}};
-    }
-  }
+  // if (sessionStorage.getItem("user")) {
+  //   let userId = JSON.parse(sessionStorage.getItem("user")).userId;
+  //   if (userId) {
+  //     if (!param) {
+  //       param = {}
+  //     }
+  //     let stringify = JSON.stringify(param);
+  //     let token = md5(stringify + userId + "key-hz-20180123").toString();
+  //     config = {headers: {token: token, tokenId: userId}};
+  //   }
+  // }
 
-  if (path.indexOf('/manager/') === 0) {
-    path = Vue.prototype.$User_Url + path;
+  if (baseType === 1) {//用户中心url --0：代表设备url
+    path = Vue.prototype.$userUrl + path;
+  } else if (baseType === 2) {//绘本url
+    path = Vue.prototype.bookUrl + path;
   }
 
   return axios.post(path, param, config).then((res) => {
