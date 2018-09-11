@@ -53,8 +53,8 @@ export default new Router({
       children: [
         {path: '/picBook', component: PicBook, name: '绘本 '},
         {path: '/addBook', component: AddBook, name: '添加绘本', hidden: true},
-        {path: '/resourceList', component: ResourceList, name: '资源'},
-        {path: '/addResource', component: AddResource, name: '添加资源', hidden: true},
+        // {path: '/resourceList', component: ResourceList, name: '资源'},
+        // {path: '/addResource', component: AddResource, name: '添加资源', hidden: true},
         {path: '/tagList', component: TagList, name: '标签分类'}
       ]
     },
@@ -62,7 +62,7 @@ export default new Router({
       path: '/banner',
       name: '运营',
       component: Index,
-      icon: 'fa fa-book fa-lg',
+      icon: 'fa fa-ad fa-lg',
       children: [
         {path: '/banner', component: Banner, name: 'banner管理'}
       ]
